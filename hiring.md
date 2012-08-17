@@ -1,4 +1,4 @@
-人人网 2012 年校招部分职位如下, 请有意者将简历发送至 renren.ad.xiaozhao@renren-inc.com
+人人网 2013 年校招部分职位如下, 请有意者将简历发送至 renren.ad.xiaozhao@renren-inc.com
 邮件标题请按 [学校][姓名][职位] 方式注明申请职位, 简历请以 .pdf/.doc 等形式给出, 并在文件名中同样标记申请职位和姓名
 
 
