@@ -1,0 +1,44 @@
+# .bashrc
+
+# some more ls aliases
+alias ..="cd .."
+alias ll="ls -l"
+alias la="ls -a"
+alias lla="ls -la"
+alias psa="ps -efjlH"
+
+# a useful search command by ecore
+function search() {
+    KEY_EXP="${1}"
+    shift
+    grep "${KEY_EXP}" --color="auto" --exclude="*.svn-*" -Inr "${@:-.}" 2>"/dev/null"
+    unset KEY_EXP
+}
+
+# some tools for svn
+alias diffr='diff -r --exclude="*.svn*"'
+alias rmallsvn='rm -rf $(find . -name ".svn")'
+alias svnvdiff='svn diff --diff-cmd ~/yewen/shlib/diffwrap.sh'
+export SVN_EDITOR="vim"
+
+function diffn() {
+    diff -r --exclude="*.svn*" $1 $2 | grep "^diff"
+}
+
+function diffncp() {
+    diff -r --exclude="*.svn*" $1 $2 | grep "^diff" | awk '{print "cp",$4,$5}'
+}
+
+function diffnvim() {
+    diff -r --exclude="*.svn*" $1 $2 | grep "^diff" | awk '{print "vimdiff",$4,$5}'
+}
+
+function genmd5() {
+    filelist=`ls | awk '{if(!($0 ~ /md5$/)){print}}'`
+
+    for file in $filelist
+    do
+        md5file="${file}.md5"
+        `md5sum $file > $md5file`
+    done
+}

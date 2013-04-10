@@ -1,0 +1,29 @@
+set nocompatible " 非 vi 兼容模式
+syntax on " 色彩高亮
+set number " 显示行数
+set ruler " 显示当前位置于右下角
+set backspace=2 " 设置 backspace 模式为标准
+set showmatch " 显示配对括号
+set incsearch " 增量查找
+set hlsearch
+set ai " 智能缩进
+set si " 智能缩进
+set cindent " 智能缩进
+set tabstop=2 " Tab 宽度
+set softtabstop=2 " Tab 宽度
+set shiftwidth=2 " Tab 宽度
+set expandtab " 输入的 tab(\t) 均不保持为 tab 而转换为空格
+set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,sjis,euc-kr,ucs-2le,latin1 "字符编码
+set encoding=utf-8
+set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [POS=%04l,%04v][%p%%]\ [LEN=%L] " 状态栏格式
+set laststatus=2 " 一直显示状态栏
+
+" 插入模式切换
+map <F9> :set paste!<BAr>set paste?<CR>
+
+" 多 Tab 时翻页
+map <F12> <Esc>:tabnext<CR>gi <F11> :tabprevious<CR>
+imap <F12> <Esc>:tabnext<CR>gi <F11> <Esc>:tabprevious<CR>gi
+
+map <F12> <Esc>:tabnext<CR>gi <F12> :tabnext<CR>
+imap <F12> <Esc>:tabnext<CR>gi <F12> <Esc>:tabnext<CR>gi

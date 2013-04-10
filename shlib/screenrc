@@ -1,0 +1,39 @@
+# see the startup message
+startup_message off 
+term linux
+# set a biger buffer
+defscrollback 4096
+
+# 设置状态栏
+hardstatus alwayslastline    
+shelltitle "$|bash"
+
+# yewen modified status bar
+#hardstatus string '%{= kg}[ %{G}%c:%s %{g}][%= %{= kw}%?%-Lw%?%{Y}%n*%f%t %{K}%?%+Lw%?%= %{g}][ %{C}(F8)Screen (F9)Title (F10)Detach (F11)Prev (F12)Next %{g}][%{kG} %D %Y/%m/%d %{g}]'
+#hardstatus string '%{= kg}[ %{C}(F8)Screen (F9)Title (F10)Detach (F11)Prev (F12)Next %{g}][%= %?%{kg}%-Lw%?%{Y}%n*%f %t%?(%u)%?%?%{kg}%+Lw%? %{kg} %=][%{kG} %Y/%m/%d %c %{g}]'
+# a short version, can use C-a 
+hardstatus string '%{= kg}[%= %?%{kg}%-Lw%?%{Y}%n*%f %t%?(%u)%?%?%{kg}%+Lw%? %{kg} %=][%{kG} %Y/%m/%d %c %{g}]'
+#hardstatus string '%{= kg}[ %{G}%c:%s %{g}][%= %{= kw}%?%-Lw%?%{Y}%n*%f%t %{K}%?%+Lw%?%= %{g}][%{kG} %D %Y/%m/%d %{g}]'
+
+# shutdown the noise
+vbell off 
+
+# w to show the window list
+bind w windowlist -b
+bind ^w windowlist -b
+
+# initial apps to run
+screen
+screen
+select 0
+
+# 进行快捷键的绑定
+bindkey -k k8 screen
+bindkey -k k9 title
+bindkey -k k; detach
+bindkey -k F1 prev
+bindkey -k F2 next
+
+# unkonwn
+attrcolor u "-u B"
+autodetach on
