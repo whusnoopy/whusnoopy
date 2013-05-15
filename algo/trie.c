@@ -54,8 +54,8 @@ struct node* insert(struct node* root, const char* word, int len) {
   return curr_node;
 }
 
-struct node* find(struct node* root, const char* word, int len) {
-  struct node* curr_node = root;
+struct node* find(const struct node* root, const char* word, int len) {
+  const struct node* curr_node = root;
   int idx = 0;
   for (int i = 0; i < len; ++i) {
     idx = char_idx(word[i]);
@@ -66,7 +66,7 @@ struct node* find(struct node* root, const char* word, int len) {
     }
   }
   if (curr_node->is_word) {
-    return curr_node;
+    return (struct node*)curr_node;
   }
   return NULL;
 }
@@ -91,7 +91,7 @@ int remove(struct node* root, const char* word, int len) {
   return 0;
 }
 
-int print_recursion(struct node* p) {
+int print_recursion(const struct node* p) {
   if (NULL == p->parent) {
     printf("ROOT (%d)", p->num);
     return 0;
@@ -101,7 +101,7 @@ int print_recursion(struct node* p) {
   return 0;
 }
 
-int print(struct node* p) {
+int print(const struct node* p) {
   if (NULL == p) {
     printf("NULL\n");
     return -1;

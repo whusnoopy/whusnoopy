@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <time.h>
 
 const char BLACK = 'b';
 const char RED = 'r';
@@ -108,7 +109,7 @@ int right_rotate(struct node* curr_node, struct node* parent) {
   return 0;
 }
 
-int adjust_color(struct node* curr_node) {
+int insert_fixup(struct node* curr_node) {
   struct node* parent = curr_node->parent;
   // 0. is root
   if (NULL == parent) {
@@ -139,7 +140,7 @@ int adjust_color(struct node* curr_node) {
     parent->color = BLACK;
     uncle->color = BLACK;
     grandparent->color = RED;
-    adjust_color(grandparent);
+    insert_fixup(grandparent);
     return 0;
   }
 
@@ -171,8 +172,8 @@ int adjust_color(struct node* curr_node) {
 
 struct node* insert(struct node * &root, int key) {
   struct node* parent = find(root, key, true);
-  printf("==== will insert %d under\n    ", key);
-  print_path(parent);
+  // printf("==== will insert %d under\n    ", key);
+  // print_path(parent);
   // same node, insert failed
   if (NULL != parent && parent->value == key) {
     return NULL;
@@ -196,59 +197,167 @@ struct node* insert(struct node * &root, int key) {
     }
   }
 
-  printf(">>>> before adjust\n ");
-  print_path(new_node);
+  // printf(">>>> before adjust\n ");
+  // print_path(new_node);
 
   // adjust color
-  adjust_color(new_node);
+  insert_fixup(new_node);
 
   // the root may be changed during adjust
-  while (root != NULL && root->parent != NULL) {
-    root = root->parent;
+  if (root == NULL) {
+    root = new_node;
+  } else {
+    while (root->parent != NULL) {
+      root = root->parent;
+    }
   }
 
-  printf("<<<< after adjust \n");
+  printf("<<<< after insert %d and adjust color \n", key);
   print_path(new_node);
 
   return new_node;
 }
 
-int remove(struct node* root, int key) {
-  struct node* remove_node = find(root, key);
-  if (NULL == remove_node) {
+struct node* find_max(struct node* p) {
+  while (p->rchild != NULL) {
+    p = p->rchild;
+  }
+  return p;
+}
+
+int remove_fixup(struct node* curr_node, struct node* parent) {
+  if (NULL != curr_node) {
+    // 0. is root
+    if (NULL == parent) {
+      curr_node->color = BLACK;
+      return 0;
+    }
+
+    // 1. curr node is red
+    if (curr_node->color == RED) {
+      curr_node->color = BLACK;
+      return 0;
+    }
+  }
+
+  // 2. curr node is black, there must be a sibling
+  struct node* sibling = NULL;
+  if (curr_node == parent->lchild) {
+    sibling = parent->rchild;
+  } else {
+    sibling = parent->lchild;
+  }
+
+  // 3. sibling is red
+  //  and it also means parent must be black
+  //  and there must be two children of sibling and are black
+  if (sibling->color == RED) {
+    parent->color = RED;
+    sibling->color = BLACK;
+    if (sibling == parent->lchild) {
+      right_rotate(sibling, parent);
+    } else {
+      left_rotate(sibling, parent);
+    }
+  }
+
+  // the following part are discuss sibling is black
+  // 4. sibling's children are all black
+  if ((sibling->lchild == NULL || sibling->lchild->color == BLACK) &&
+      (sibling->rchild == NULL || sibling->rchild->color == BLACK)) {
+    sibling->color = RED;
+    remove_fixup(parent, parent->parent);
+    return 0;
+  }
+
+  // 6. curr is lchild , sibling's is black and sibling->l is red
+  if (curr_node == parent->lchild) {
+    if (sibling->lchild != NULL && sibling->lchild->color == RED) {
+      right_rotate(sibling->lchild, sibling);
+      remove_fixup(curr_node, parent);
+    }
+    sibling->color = parent->color;
+    sibling->rchild->color = BLACK;
+    parent->color = BLACK;
+    left_rotate(sibling, parent);
+  } else {
+    if (sibling->rchild != NULL && sibling->rchild->color == RED) {
+      left_rotate(sibling->rchild, sibling);
+      remove_fixup(curr_node, parent);
+    }
+    sibling->color = parent->color;
+    sibling->lchild->color = BLACK;
+    parent->color = BLACK;
+  }
+
+  return 0;
+}
+
+int remove_node(struct node* &root, struct node* p) {
+  // have 2 child, change the max node of p's left subtree to instead p
+  if (NULL != p->lchild && NULL != p->rchild) {
+    struct node* lmax = find_max(p->lchild);
+    p->value = lmax->value;
+    remove_node(root, lmax);
+    return 0;
+  }
+
+  struct node* parent = p->parent;
+
+  // get child
+  struct node* child = NULL;
+  if (NULL != p->lchild) {
+    child = p->lchild;
+  } else {
+    child = p->rchild;
+  }
+
+  if (NULL != parent) {
+    if (p == parent->lchild) {
+      parent->lchild = child;
+    } else {
+      parent->rchild = child;
+    }
+  } else {
+    root = child;
+  }
+  if (NULL != child) {
+    child->parent = parent;
+  }
+
+  if (p->color == BLACK) {
+    remove_fixup(child, parent);
+  }
+
+  free(p);
+  return 0;
+}
+
+int remove_by_key(struct node * &root, int key) {
+  struct node* p = find(root, key);
+  if (NULL == p) {
     return -1;
   }
+
+  printf("<<<< after remove %d and adjust color \n", key);
+  p = find(root, key, true);
+  print_path(p);
+
+  return remove_node(root, p);
 }
 
 int main(int argc, char* argv[]) {
   struct node* root = NULL;
+  srand(time(NULL));
 
-  root = insert(root, 64);
-  struct node* p = NULL;
-  
-  // test root init
-  print_path(root);
-
-  p = insert(root, 72);
-
-  p = insert(root, 32);
-
-  p = insert(root, 90);
-
-  p = insert(root, 74);
-
-  p = insert(root, 86);
-
-  p = insert(root, 23);
-
-  p = insert(root, 13);
-
-  p = insert(root, 12);
-
-  p = insert(root, 9);
-
-  p = insert(root, 3);
-
+  for (int i = 0; i < 200; ++i) {
+    insert(root, rand() % 1000);
+    insert(root, rand() % 1000);
+    insert(root, rand() % 1000);
+    insert(root, rand() % 1000);
+    insert(root, rand() % 1000);
+    while(remove_by_key(root, rand() % 1000));
+  }
   return 0;
 }
 
