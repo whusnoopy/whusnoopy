@@ -24,7 +24,7 @@ int print_color(char c) {
 
 int print_recursion(const struct node* p) {
   if (NULL == p->parent) {
-    printf("ROOT %d", p->value);
+    printf("ROOT %d(%x)", p->value, p);
     return 0;
   }
   print_recursion(p->parent);
@@ -35,6 +35,7 @@ int print_recursion(const struct node* p) {
   }
   printf("%d", p->value);
   print_color(p->color);
+  printf("(%x)", p);
   return 0;
 }
 
@@ -218,26 +219,27 @@ struct node* insert(struct node * &root, int key) {
   return new_node;
 }
 
-struct node* find_max(struct node* p) {
-  while (p->rchild != NULL) {
-    p = p->rchild;
-  }
-  return p;
-}
-
 int remove_fixup(struct node* curr_node, struct node* parent) {
-  if (NULL != curr_node) {
-    // 0. is root
-    if (NULL == parent) {
-      curr_node->color = BLACK;
-      return 0;
-    }
+  // printf("[debug] ADJUST >> ");
+  print_path(curr_node);
+  // 0. is root
+  if (NULL == parent) {
+    curr_node->color = BLACK;
+    return 0;
+  }
 
-    // 1. curr node is red
-    if (curr_node->color == RED) {
-      curr_node->color = BLACK;
-      return 0;
-    }
+  /*
+  if (NULL == curr_node) {
+    // curr is NULL, same as black
+    return 0;
+  }
+  */
+
+  // 1. curr node is red
+  if (curr_node != NULL && curr_node->color == RED) {
+    // printf("[debug][1] curr is red\n");
+    curr_node->color = BLACK;
+    return 0;
   }
 
   // 2. curr node is black, there must be a sibling
@@ -248,10 +250,14 @@ int remove_fixup(struct node* curr_node, struct node* parent) {
     sibling = parent->lchild;
   }
 
+  // printf("[debug] parent(%x) -L(%x) -R(%x)\n", parent, parent->lchild, parent->rchild);
+  // printf("[debug] SIBLING ");
+  print_path(sibling);
+
   // 3. sibling is red
   //  and it also means parent must be black
   //  and there must be two children of sibling and are black
-  if (sibling->color == RED) {
+  if (sibling != NULL && sibling->color == RED) {
     parent->color = RED;
     sibling->color = BLACK;
     if (sibling == parent->lchild) {
@@ -259,35 +265,66 @@ int remove_fixup(struct node* curr_node, struct node* parent) {
     } else {
       left_rotate(sibling, parent);
     }
+    // printf("[debug] sibling is red, rotate\n");
+    remove_fixup(curr_node, parent);
+    return 0;
   }
 
   // the following part are discuss sibling is black
-  // 4. sibling's children are all black
-  if ((sibling->lchild == NULL || sibling->lchild->color == BLACK) &&
-      (sibling->rchild == NULL || sibling->rchild->color == BLACK)) {
-    sibling->color = RED;
+  // 4. parent is red, just change color
+  if (parent->color == RED) {
+    parent->color = BLACK;
+    if (sibling != NULL) {
+      sibling->color = RED;
+    }
+    return 0;
+  }
+
+  // the following part are discussing p(b) & s(b)
+  if (NULL == sibling) {
     remove_fixup(parent, parent->parent);
     return 0;
   }
+
+  // 5. sibling's children are all black
+  if (parent->color == BLACK &&
+      (sibling->lchild == NULL || sibling->lchild->color == BLACK) &&
+      (sibling->rchild == NULL || sibling->rchild->color == BLACK)) {
+    sibling->color = RED;
+    // printf("[debug] sibing is black and all children are black, change to red and adjust parent\n");
+    remove_fixup(parent, parent->parent);
+    return 0;
+  }
+
+  // printf("[debug] ------ sibling(%x) L(%x) R(%x)\n", sibling, sibling->lchild, sibling->rchild);
 
   // 6. curr is lchild , sibling's is black and sibling->l is red
   if (curr_node == parent->lchild) {
     if (sibling->lchild != NULL && sibling->lchild->color == RED) {
       right_rotate(sibling->lchild, sibling);
+      // printf("[debug] [rotate] curr is L, sibling L is red\n");
       remove_fixup(curr_node, parent);
+      return 0;
     }
+    // printf("[debug] curr is L, sibling R is red\n");
     sibling->color = parent->color;
     sibling->rchild->color = BLACK;
     parent->color = BLACK;
+    printf("==\n");
     left_rotate(sibling, parent);
   } else {
     if (sibling->rchild != NULL && sibling->rchild->color == RED) {
       left_rotate(sibling->rchild, sibling);
+      // printf("[debug] [rotate] curr is R, sibling R is red\n");
       remove_fixup(curr_node, parent);
+      return 0;
     }
+    // printf("[debug] curr is R, sibling L is red\n");
     sibling->color = parent->color;
     sibling->lchild->color = BLACK;
     parent->color = BLACK;
+    printf("==\n");
+    right_rotate(sibling, parent);
   }
 
   return 0;
@@ -296,8 +333,13 @@ int remove_fixup(struct node* curr_node, struct node* parent) {
 int remove_node(struct node* &root, struct node* p) {
   // have 2 child, change the max node of p's left subtree to instead p
   if (NULL != p->lchild && NULL != p->rchild) {
-    struct node* lmax = find_max(p->lchild);
+    struct node* lmax = p->lchild;
+    while (lmax->rchild != NULL) {
+      lmax = lmax->rchild;
+    }
     p->value = lmax->value;
+    printf("[debug] removing the max in the left subtree\n");
+    print_path(lmax);
     remove_node(root, lmax);
     return 0;
   }
@@ -311,6 +353,10 @@ int remove_node(struct node* &root, struct node* p) {
   } else {
     child = p->rchild;
   }
+
+  // printf("[debug]    %x - p - %x\n", parent, child);
+  // printf("[debug] CHILD ");
+  print_path(child);
 
   if (NULL != parent) {
     if (p == parent->lchild) {
@@ -329,7 +375,11 @@ int remove_node(struct node* &root, struct node* p) {
     remove_fixup(child, parent);
   }
 
+  int tmp_key = p->value;
   free(p);
+  printf("---- after remove and adjust color \n");
+  p = find(root, tmp_key, true);
+  print_path(p);
   return 0;
 }
 
@@ -339,8 +389,7 @@ int remove_by_key(struct node * &root, int key) {
     return -1;
   }
 
-  printf("<<<< after remove %d and adjust color \n", key);
-  p = find(root, key, true);
+  printf("<<<< before remove %d and adjust color \n", key);
   print_path(p);
 
   return remove_node(root, p);
@@ -350,14 +399,22 @@ int main(int argc, char* argv[]) {
   struct node* root = NULL;
   srand(time(NULL));
 
-  for (int i = 0; i < 200; ++i) {
-    insert(root, rand() % 1000);
-    insert(root, rand() % 1000);
-    insert(root, rand() % 1000);
-    insert(root, rand() % 1000);
-    insert(root, rand() % 1000);
-    while(remove_by_key(root, rand() % 1000));
+  const int round = 2000;
+  const int max_value = 1000;
+  for (int i = 0; i < round; ++i) {
+    insert(root, rand() % max_value);
+    insert(root, rand() % max_value);
+    insert(root, rand() % max_value);
+    insert(root, rand() % max_value);
+    insert(root, rand() % max_value);
+    while(remove_by_key(root, rand() % max_value));
   }
+  insert(root, 64);
+//  remove_by_key(root, 64);
+  insert(root, 32);
+  insert(root, 16);
+  remove_by_key(root, 32);
+
   return 0;
 }
 
