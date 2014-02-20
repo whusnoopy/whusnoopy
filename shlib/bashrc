@@ -11,7 +11,7 @@ alias psa="ps -efjlH"
 function search() {
     KEY_EXP="${1}"
     shift
-    grep "${KEY_EXP}" --color="auto" --exclude="*.svn-*" -Inr "${@:-.}" 2>"/dev/null"
+    grep "${KEY_EXP}" --color="auto" --exclude=".git" -Inr "${@:-.}" 2>"/dev/null"
     unset KEY_EXP
 }
 
