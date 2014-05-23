@@ -1,0 +1,347 @@
+[toc wrapping="right"]
+
+## vimrc
+
+    set nocompatible " 非 vi 兼容模式
+    syntax on " 色彩高亮
+    set number " 显示行数
+    set ruler " 显示当前位置于右下角
+    set backspace=2 " 设置 backspace 模式为标准
+    set showmatch " 显示配对括号
+    set incsearch " 增量查找
+    set hlsearch
+    set ai " 智能缩进
+    set si " 智能缩进
+    set cindent " 智能缩进
+    set tabstop=4 " Tab 宽度
+    set softtabstop=4 " Tab 宽度
+    set shiftwidth=4 " Tab 宽度
+    set expandtab " 输入的 tab(t) 均不保持为 tab 而转换为空格
+    set fileencodings=ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,sjis,euc-kr,ucs-2le,latin1 "字符编码
+    set encoding=utf-8
+    set statusline=%F%m%r%h%w [FORMAT=%{&ff}] [TYPE=%Y] [POS=%04l,%04v][%p%%] [LEN=%L] " 状态栏格式
+    set laststatus=2 " 一直显示状态栏
+
+    " 插入模式切换
+    map <F7> :set paste!<BAr>set paste?<CR>
+
+    " 多 Tab 时翻页
+    map <silent> <F6> :tabnext<CR>
+    imap <silent> <F6> <Esc>:tabnext<CR>gi
+
+## tmux.conf
+
+    set -g default-terminal "screen-256color"
+
+    bind-key -n F8 new-window
+    bind-key -n F9 command-prompt 'rename-window %%'
+    bind-key -n F10 detach
+    bind-key -n F11 previous-window
+    bind-key -n F12 next-window
+
+    bind-key b send-prefix
+
+    set-window-option -g window-status-current-fg brightyellow
+    set -g status-right "#h %Y-%m-%d %H:%M"
+
+## Linux 基本命令笔记
+
+本部分原来是作为一个简单的内部教程, 后来发现公开出来也许更好. 对 Linux 常见命令进行说明, 每行用 # 做单行注释. 只涉及了工作中需要用到的命令, 类似 `passwd` 和 `su` 这些一般不用的命令就没说明了. 如果需要更详细的说明, 具体的文档网上一搜一大把, 或者直接 `man` 一下. 同样的命令不同的发行版可能会有区别 (比如 `rename` 在 Ubuntu 和 RedHat 的用法不一样), 请以实际系统为准.
+
+### 系统基本命令
+
+#### man
+
+    man command     # 查看 command 命令的详细帮助文档
+
+> 最重要的命令, 什么不会了就直接 `man` 一下看帮助. 或者用 `command --help` 看简要帮助
+
+#### date
+
+查看/设置当前时间
+
+    date            # 列举当前时间
+    date +%Y%m%d    # 列举时间为 YYYYmmdd 的格式, 具体格式说明请 man date
+    date MMDDhhmm[[CC]YY][.ss]  # 设置系统时间为 CCYY 年 MM 月 DD 日 hh 时 mm 分 ss 秒
+
+使用 `-d` 查看相对时间
+
+    date -d "today"     # 查看 STRING 描述的时间, 可以用 today, now, yesterday, tomorror 等英文语法
+    date -d "1 day ago" # 查看过去时间, 描述单位可以是 second, minute, hour, day, week, month, year
+    date -d "2 week next 20110523" # 查看相对某时刻的相对时间, 比较关系可以是 ago, next
+
+#### df
+
+    df    # 查看磁盘使用状况
+    df -h # 使用 B/K/M/G/T 等容量友好方式查看磁盘使用状况
+
+#### du
+
+    du      # 查看当前目录和子目录大小
+    du -h   # 查看当前目录和子目录大小, 容量用 B/K/M/G/T 等友好方式显示
+    du -sh  # 仅查看当前目录的大小, 容量用 B/K/M/G/T 等友好方式显示
+    du -sh /home/yewen/*   # 显示 /home/yewen/* 这些目录的大小
+
+#### chmod
+
+    chmod 755 filea   # 修改 filea 的权限为 755 (rwxr-xr-x)
+    chmod -x filea    # 取消 filea 的可执行权限
+    chmod +w filea    # 增加 filea 有可写权限
+    chmod -R 755 dira # 修改目录 dira 及其里面的所有子目录/文件的权限为 755
+
+#### top
+
+直接输入 `top` 查看当前机器的状态, 按特定参数排序 (如 CPU 占用, 内存占用等). 配置 `~/.toprc` 获得更友好的显示方式 (也可以在 top 界面里配然后保存). 使用 `<` 和 `>` 来切换高亮列 (即按什么参数排序)
+
+#### free
+
+    free      # 查看当前内存使用状况, 单位 byte
+    free -m   # 查看当前内存使用状况, 单位 MB, 参数还可以是 -g, -k 等
+
+#### ps
+
+    ps        # 查看当前运行的进程
+    ps -aux   # 查看当前所有用户运行的进程
+    ps -elf   # 另一种常用的查看所有用户运行进程的指令
+
+此处仅列举了常用的方法, 更详细的请 `ps --help` 或 `man ps` 查看了解. 通过 `ps` 命令结合不同参数可以查看某进程的进程号 (PID), 以及其父进程号 (PPID), 以及进程运行参数等
+
+#### kill / killall
+
+    kill 1984         # 终止进程号为 1984 的进程
+    kill -9 1984      # 强制终止进程 1984
+    killall snoop     # 终止所有名为 imas 的进程
+    killall -9 snoop  # 强制终止所有名为 imas 的进程
+
+#### w / who
+
+    w       # 查看当前登陆用户
+    who     # 另一种查看当前登陆用户的方式, 两者显示内容有区别
+    whoami  # 查看当前是用哪个用户名登陆的
+
+### 管道和命令行参数
+
+#### 管道
+
+    >               # 输出重定向
+    ./a.out > file  # 将 a.out 的结果输出成文件 file
+    >>              # 追加到末尾
+    ./a.out >> file # 将 a.out 的结果追加输出到文件 file 的末尾
+    |               # 输出成管道
+    ./a.out | ./b   # 将 a.out 的结果输出到管道, 作为 b 的输入
+
+#### 命令行参数
+
+    $1/$2/.../$N    # 第 1, 2, ... , N 个命令行参数
+    $*              # 所有命令行参数
+    $#              # 命令行参数个数
+    $$              # 当前所在进程号
+    $?              # 上一条命令执行完成后返回给 shell 的值
+
+### 文件系统相关
+
+#### pwd
+
+    pwd             # 列举当前所在目录
+
+#### cd
+
+    cd dirname      # 进入目录 dirname
+    cd ..           # 进入上一级目录
+    cd -            # 回到上一次的目录 (从哪个目录跳到当前目录的)
+
+#### mv
+
+    mv a b          # 移动文件或文件夹 a 到 b (覆盖为 b)
+    mv a dir_b/     # 移动文件或文件夹 a 到目录 dir_b 下 (在 dir_b 的内部)
+
+#### cp
+
+    cp a b          # 拷贝文件 a 到 b (覆盖为 b)
+    cp a b/         # 拷贝文件 a 到目录 dir_b 下 (在 dir_b 的内部)
+    cp -r dir_a b   # 拷贝目录 dir_a 为 b (覆盖为 b)
+    cp -r a dir_b/  # 拷贝目录 a 到目录 dir_b 下 (在 dir_b 的内部)
+
+#### rm
+
+    rm a            # 删除文件 a
+    rm -r dir_a     # 删除空目录 dir_a
+    rm -rf dir_a    # 删除目录 dir_a 及内部所有内容
+
+<p class="ntc"><code>rm -rf</code> 命令威力巨大, 慎用, 特别是不要把绝对路径写错空格成 <code>rm -rf / xxx</code> 这样, 会删掉系统所有内容</p>
+
+#### touch
+
+    touch a         # 如果文件 a 不存在, 生成一个空文件 a
+                    # 否则将文件 a 的最后修改时间更改为当前时间
+
+#### mkdir
+
+    mkdir dir_a     # 建立目录 a
+    mkdir -p a/b    # 递归建立目录 a/b, 如果目录 a 不存在, 会自动建立目录 a
+
+#### 待续
+
+* find
+
+### 查看文件内容相关
+
+#### cat
+
+    cat file_a      # 将文件 file_a 的内容输出
+
+#### head
+
+    head file_a     # 输出文件 file_a 的前 10 行 (默认)
+    head -200 a     # 输出文件 a 的前 200 行 (由 -nnn 参数指定)
+
+#### tail
+
+    tail file_a     # 输出文件 file_a 的末尾 10 行 (默认)
+    tail -200 a     # 输出文件 a 的末尾 200 行 (由 -nnn 参数指定)
+    tail -f file_a  # 更新输出文件 a 的末尾内容
+                    # (如果文件有更新则一直输出, 一般用来看滚动日志, 使用 Ctrl-c 退出)
+
+如果需要查看文件的特定范围行, 没有特别好的方法, 只能用 `head`/`tail` 组合使用, 比如
+
+    head -5000 file_a | tail -10    # 查看文件 file_a 的 4991~5000 行
+    tail -200 file_a | head -10     # 查看文件 file_a 的倒数 200~191 行
+
+#### less
+
+    less file_a     # 查看 file_a 的内容
+
+`less` 进去了后常用命令 (基本同 vim)
+
+    h/j/k/l         # 光标左/下/上/右移动
+    g/G             # 文件头/尾
+    /               # 向后搜索
+    n/N             # 搜索的下一个/上一个匹配位置
+    q               # 退出
+
+### 简单文本处理相关
+
+如果没有特意指明, 本部分涉及的命令均为处理文本文件, 且都是用 `t` 分割的行列式文件. 很多命令可以指定分隔符, 请自行 `man` 查看参数
+
+#### grep
+
+    grep "pat" a    # 过滤文件 a 内有 pat 的行
+
+`grep` 命令参数比较丰富, 用 `man grep` 或 `grep --help` 看看. 中间的 "pat" 是一个 shell 规范的正则表达式
+
+#### cut
+
+    cut -f1 file_a  # 将文本文件 file_a 的第一列输出
+    cut -f1,3,5 a   # 将文本文件 a 的第 1, 3, 5 列输出
+
+#### sort
+
+    sort file_a     # 按字符序将文本文件 file_a 按行排序输出 (默认用整行)
+    sort -n file_a  # 按数字序将文本文件 file_a 按行排序输出
+    sort -n -r a    # 按数字倒序将文本文件 a 按行排序输出
+    sort -k2,3 -n a # 按第 2 到第 3 字段, 以数字序将文本文件 file_a 按行排序输出
+
+`sort` 命令参数比较丰富, 指定分隔符, 按数字序或是否倒序, 以哪些列为 key 等, 都可能用到. 还是那句话, `man sort` 了解更多
+
+#### uniq
+
+    uniq file_a     # 将一个有序文本文件 file_a 去重输出, 仅保留不重复行
+
+<p class="ntc"><code>uniq</code> 的输入必须是有序的, 否则无法做到去重, 如 a/a/b/a 会输出 a/b/a 而不是只有 a/b</p>
+
+#### wc
+
+    wc file_a       # 统计文本文件 file_a 的行数, 单词数, 字符数
+    wc -l file_a    # 统计文本文件 file_a 的行数
+
+#### 组合使用
+
+文本处理命令大多可以组合使用, 得到想要的结果, 比如
+
+    head -5000 file_a | grep "yewen" | cut -f1 | sort | uniq | wc -l
+
+这个命令可以看到文本文件 file_a 的前 5000 行中, 包括有 <span style="color:#ff4757">yewen</span> 的行中, 第一列的值有多少个不一样的
+
+如果配合 `awk`/`sed` 等行编辑器, 基本可以搞定绝大部分简单的文本处理
+
+#### 待续
+
+* diff
+
+### 网络相关
+
+#### ssh
+
+    ssh yewen@w.yewen.us            # 以 yewen 的身份登陆到 w.yewen.us 这台机器
+
+#### scp
+
+    scp a yewen@w.yewen.us:~/       # 将本地文件 a 远程拷贝到 w.yewen.us 的 yewen 帐号主目录下
+                                    # 在远程机器上使用帐号 yewen 操作
+    scp -r dir yewen@w.yewen.us:~/  # 将本地文件夹 dir 远程拷贝到 w.yewen.us 的 yewen 帐号主目录下
+    scp -r a b yewen@w.yewen.us:~/  # 将本地文件/文件夹 a, b 远程拷贝到 w.yewen.us:~/ 下
+                                    # scp 多个文件/文件夹时, 推荐是本地拷贝到远程的方式, 可以不用写多个命令
+
+#### wget
+
+    # 获取远程文件到本地当前目录下, 保持文件名不变
+    wget ftp://w.yewen.us/home/yewen/.bashrc
+    # 获取远程文件到本地, 以名字 c 存在当前路径的 a/b/ 下
+    wget ftp://w.yewen.us/home/yewen/.bashrc -O a/b/c
+
+<p class="ntc">修改下载路径用的是大写 <code>-O</code> 参数, 小写 <code>-o</code> 是输出获取日志</p>
+
+`wget` 的参数一堆一堆的, 有看到别人用的时候学着点吧, 要不就自己 `man wget` 来研究
+
+#### lftp
+
+`lftp` 会跳转到对方机器上, 下面的示例中, `$` 开头的是本机命令提示符, `>` 开头的是远程命令提示符, 请注意
+
+    # ftp 匿名登陆到 w.yewen.us, 并进入 /home/yewen 目录
+    $ lftp ftp://w.yewen.us/home/yewen
+    # 查看当前所在目录
+    > pwd
+    # 进入目录 a
+    > cd a
+    # 查看当前目录文件
+    > ls
+    # 将 ftp 当前目录的文件 file_a 获取到本地
+    > get file_a
+    # 将本机当前目录的文件 file_b 上传至 ftp 当前目录
+    > put file_b
+    # 退出 ftp
+    > exit
+
+### 功能增强相关
+
+#### screen
+
+`screen` 可以在服务器上开一系列托管终端并管理. 开启的 `screen` 可以在断开连接后还在服务器上运行, 可以在再次登陆后快速恢复自己之前的工作. 如果需要放到后台运行的程序, 除了用 `nohup` 外也可以在 `screen` 里运行. 一些简单的命令演示如下
+
+    # 开启一个新的 screen 并指定名字为 yewen
+    $ screen -S yewen
+    # 查看当前在运行的 screen 有哪些 (Attached 是已恢复的, Detached 的挂起的)
+    $ screen -ls
+    # 恢复到 yewen 这个 screen 里
+    $ screen -r yewen
+
+`screen` 里面大部分操作都是用 `Ctrl^a` 进入命令模式, 再执行其他的命令, 列几个简单的
+
+    Ctrl^a Esc 进入拷贝模式, 可以 PageUp/PageDown 看该 screen 里的上面屏幕的内容 (直接拖滚动条是不行的)
+    q 退出拷贝模式
+
+多 `screen` 的控制, 我配了几个快捷键, 在使用了我的 `.screenrc` 配置文件后可以直接在最下面看到
+
+    F8    # 新开启一个 screen 窗口
+    F9    # 重命名当前 screen 窗口
+    F10   # 挂起当前 screen (挂起退出, 后续可以恢复)
+    F11   # 切换到上一个 screen 窗口
+    F12   # 切换到下一个 screen 窗口
+    exit  # 退出当前 screen 窗口 (直接退出, 但不影响当前 screen 下的其他窗口
+          #                        如果是最后一个窗口, 则退出整个 screen)
+
+#### history / Ctrl^R
+
+`history` 命令可以查看当前用户在过去通过命令行执行的命令. "过去" 是指当前用户当前登陆会话和之前所有已退出的会话, 如果当前同一用户还有别的会话, 看不到别的会话里的记录.
+
+`Ctrl^R` 可以增量搜索过去的命令 (类似在 `history` 里直接搜索)
