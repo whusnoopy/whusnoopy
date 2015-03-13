@@ -1,0 +1,83 @@
+# About
+
+## 关于本站
+
+本站为 yewen.us 私人空间, 笨狗的又一个狗窝.
+
+### 联系方式
+
+* 发邮件到 <i@yewen.us>
+* QQ `i@yewen.us` <a target="_blank" href="http://sighttp.qq.com/authd?IDKEY=ab759f682de4a889bbe79c653e247acf612ab717787864cd"><img border="0"  src="http://wpa.qq.com/imgd?IDKEY=ab759f682de4a889bbe79c653e247acf612ab717787864cd&pic=46" alt="点击这里给我发消息" title="点击这里给我发消息"></a>
+* Baidu Hi `whusnoopy`
+  (<a href="baidu://message/?sid=&amp;id=whusnoopy" target="_blank" title="点击通过百度 Hi 与 whusnoopy 聊天">点击启动 Hi 聊天</a>)
+  (<a href="baidu://addcontact/?sid=&amp;id=whusnoopy" target="_blank" title="点击添加 whusnoopy 为百度 Hi 好友">点击添加好友</a>)
+* Gtalk `whusnoopy@gmail.com`
+  (<a href="gtalk:chat?jid=whusnoopy@gmail.com" target="_blank" title="点击通过 Google Talk 与 whusnoopy@gmail.com 聊天">点击启动 gtalk 聊天</a>)
+
+### 站点技术支持
+
+ * 使用 [Markdown](http://daringfireball.net/projects/markdown/syntax) 为主要语法规范
+ * 自编 python 脚本生成站点增强代码 (比如右侧目录结构和导航, 一些特定样式的支持)
+ * shell 脚本控制生成发布
+ * Google Code svn 进行版本控制
+
+> 有关为什么使用 Markdown 来作为主要语法规范进行文档管理, 可以参考百度 duoyi 的 _寻找更好的文档管理工具 (Why ADoc)_ 一文
+
+## 每天进步一点点
+
+### 2012-01-01
+
+  1. 完成个人 Blog 的迁移
+
+### 2011-08-10
+
+  1. 启用 yewen.us 指向独立空间
+
+<!--
+
+## About Me (yewen)
+
+<center>
+**叶文**
+
+(阿排, Snoopy, iBook, 笨狗, ...) 
+
+<i@yewen.us>
+</center>
+
+### EXPERIENCE
+
+#### Work Experince
+
+ * 2011.10~       算法架构师 人人网应用研究中心 <wen.ye@renren-inc.com>
+ * 2010.6~2011.10 高级软件研发工程师 百度商务搜索部 <yewen@baidu.com>
+
+#### Internship and Scholarship
+
+ * 2009.10~2010.6 实习软件研发工程师 百度商务搜索部 <yewen@baidu.com> (pre-onboard, 提前入职实习)
+ * 2009.7~2009.10 Visiting Student (访问学生, 实习生) 微软亚洲研究院 (MSRA) <v-weny@microsoft.com>
+ * 2009.2~2009.7  Research Assistant (RA, 助研) 香港理工大学 (HK PolyU) <cswenye@comp.polyu.edu.hk>, 发表论文 A Preliminary Study on Dynamic Keyword Extraction for Contextual Advertising, in proceedings of SIGIR'09
+ * 2007.10~2008.1 实习软件工程师 谷歌上海工程研究院 <yewen@google.com>
+ * 2007.7~2007.9  实习软件研发工程师 百度商务搜索部 <yewen@baidu.com>
+
+#### University Experince
+
+ * 曾任武大 ACM/ICPC 集训队负责人及武大 ACM/ICPC 协会主席, 分别以赛事主席 (06) 和裁判长 (07) 身份组织两次华中区程序设计邀请赛, 常用 id "Snoopy"
+ * 曾任武汉大学微软技术俱乐部主席
+ * 曾任武汉大学珞珈山水 BBS 程序站务并兼职管理站务, 美工等, 参与负责运营维护, 常用 id 为 "iBook".
+
+### EDUCATION
+
+ * 2004.9~2008.6 武汉大学计算机学院计算机科学与技术 本科 (免试录取) <cswenye@whu.edu.cn>
+ * 2008.9~2010.6 武汉大学计算机学院计算机软件与理论 硕士研究生 (免试录取, 导师李春葆教授) <cswenye@whu.edu.cn>
+
+班上的人都叫他 "阿排".
+
+### AWARDS
+
+ * 参加 ACM/ICPC (国际大学生程序设计竞赛) 亚洲区区域赛两次 (06 北京, 06 上海), 一银一铜
+ * 多次参加华中地区各高校邀请赛
+ * 参加 2007 MCM (世界数学建模竞赛), 一等奖
+
+-->
+

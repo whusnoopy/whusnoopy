@@ -1,0 +1,52 @@
+# 主页
+
+## 快速链接
+
+人人内部工作资源请访问 <http://r.yewen.us> (仅限人人内网访问)
+
+以前百度内部的工作资源请访问 <http://ourfcr.info> (仅限百度内网访问)
+
+### 有关笨狗
+
+* [笨狗又一窝](/blog) (个人博客, 已完成之前个人内容的搬迁)
+* [笨狗的校内](http://www.renren.com/whusnoopy)
+
+### 常用工具
+
+* [死猫的鱼漂](http://yupiao.info): 跟火车票有关的瑞士军刀
+* [在线安装 Chrome](http://www.google.com/chrome/eula.html?extra=devchannel&hl=zh-CN)
+
+### 技术参考
+
+* <a href="http://www.ibm.com/developerworks/cn/linux/l-cn-shell-debug/" target="_blank">Shell 脚本调试技术</a> <br />
+* <a href="http://www.ibm.com/developerworks/cn/linux/l-vimdiff/" target="_blank">Vimdiff 使用技巧</a> <br /> 
+* <a href="http://www.cnblogs.com/coderzh/archive/2009/04/06/1426755.html" target="_blank">玩转 GTest 单元测试框架系列</a> <br />
+
+## 站点信息
+
+本站为 yewen.us 私人空间, 笨狗的又一个狗窝
+
+### News
+
+#### 个人 blog 迁移完毕
+
+包括教育网博客, Live Space, Q-zone, 百度空间, 校内， 所有日志均迁移完毕并分类及打标签
+
+#### yewen.us 独立上线
+
+将以前指向组内的 yewen.us 拿出来作为私人空间使用, 和百度有关工作的请访问 <http://ourfcr.info> (内网地址, 非百度总部的人不用尝试了)
+
+#### 本站全面切换到 markdown
+
+使用 markdown 来管理本站, 并修改界面风格
+ 
+#### 界面风格扩展为适应 1280px 宽度
+ 
+考虑到现在朋友们的最低的分辨率大多都是 12' 笔记本的的 1280*800, 所以扩展本站适应宽度为 1280px.
+
+CSS 浏览器兼容现状 (支持的可以点击安装):
+
+ * 测试支持: [Chrome](http://www.google.com/chrome/eula.html?extra=devchannel&hl=zh-CN)
+ * 没有完整测试: Firefox, IE8, IE9
+ * 明确不支持: IE6, IE7
+ 
