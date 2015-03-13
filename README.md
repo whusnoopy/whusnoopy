@@ -1,5 +1,4 @@
 # README
 
-This is a temp repo, which used for me to learn how to use git
+This is a repo for myself to store learning notes or other funny tools
 
-I've owned another repo on google code (http://code.google.com/p/whusnoopy)
