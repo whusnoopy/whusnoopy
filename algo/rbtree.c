@@ -24,7 +24,7 @@ int print_color(char c) {
 
 int print_recursion(const struct node* p) {
   if (NULL == p->parent) {
-    printf("ROOT %d(%x)", p->value, p);
+    printf("ROOT %d(%p)", p->value, p);
     return 0;
   }
   print_recursion(p->parent);
@@ -35,7 +35,7 @@ int print_recursion(const struct node* p) {
   }
   printf("%d", p->value);
   print_color(p->color);
-  printf("(%x)", p);
+  printf("(%p)", p);
   return 0;
 }
 
@@ -250,7 +250,7 @@ int remove_fixup(struct node* curr_node, struct node* parent) {
     sibling = parent->lchild;
   }
 
-  // printf("[debug] parent(%x) -L(%x) -R(%x)\n", parent, parent->lchild, parent->rchild);
+  // printf("[debug] parent(%p) -L(%p) -R(%p)\n", parent, parent->lchild, parent->rchild);
   // printf("[debug] SIBLING ");
   print_path(sibling);
 
@@ -296,7 +296,7 @@ int remove_fixup(struct node* curr_node, struct node* parent) {
     return 0;
   }
 
-  // printf("[debug] ------ sibling(%x) L(%x) R(%x)\n", sibling, sibling->lchild, sibling->rchild);
+  // printf("[debug] ------ sibling(%p) L(%p) R(%p)\n", sibling, sibling->lchild, sibling->rchild);
 
   // 6. curr is lchild , sibling's is black and sibling->l is red
   if (curr_node == parent->lchild) {
@@ -354,7 +354,7 @@ int remove_node(struct node* &root, struct node* p) {
     child = p->rchild;
   }
 
-  // printf("[debug]    %x - p - %x\n", parent, child);
+  // printf("[debug]    %p - p - %p\n", parent, child);
   // printf("[debug] CHILD ");
   print_path(child);
 
