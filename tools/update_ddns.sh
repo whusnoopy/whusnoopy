@@ -8,6 +8,8 @@ TOKEN="TODO"
 DOMAIN="TODO"
 SUB_DOMAIN="TODO"
 
+source "ddns.conf"
+
 REQUEST_PARAM="login_token=${TOKEN_ID},${TOKEN}&format=json&domain=${DOMAIN}&sub_domain=${SUB_DOMAIN}"
 
 record_info=$(curl -s -X POST https://dnsapi.cn/Record.List -d "${REQUEST_PARAM}")
