@@ -8,7 +8,7 @@ TOKEN="TODO"
 DOMAIN="TODO"
 SUB_DOMAIN="TODO"
 
-source "ddns.conf"
+source "$(dirname $0)/ddns.conf"
 
 REQUEST_PARAM="login_token=${TOKEN_ID},${TOKEN}&format=json&domain=${DOMAIN}&sub_domain=${SUB_DOMAIN}"
 
