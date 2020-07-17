@@ -1,4 +1,3 @@
-# README
+I'm hiring for meideng.net
 
-This is a repo for myself to store learning notes or other funny tools
-
+为杭州美登科技招聘研发工程师，详见 meideng.net/join
