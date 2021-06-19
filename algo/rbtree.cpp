@@ -1,3 +1,4 @@
+#include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -20,6 +21,8 @@ int print_color(char c) {
   } else {
     printf("\033[0;1;31m%c\033[m", c);
   }
+
+  return 0;
 }
 
 int print_recursion(const struct node* p) {
