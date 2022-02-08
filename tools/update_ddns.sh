@@ -10,12 +10,22 @@ SUB_DOMAIN="TODO"
 
 source "$(dirname $0)/ddns.conf"
 
+
+#### parse ids
+
+if [ $(grep -V | grep "GNU grep") ]
+then
+  GREP="grep"
+else
+  GREP="ggrep"
+fi
+
 REQUEST_PARAM="login_token=${TOKEN_ID},${TOKEN}&format=json&domain=${DOMAIN}&sub_domain=${SUB_DOMAIN}"
 
 record_info=$(curl -s -X POST https://dnsapi.cn/Record.List -d "${REQUEST_PARAM}")
-record_id=$(echo ${record_info} | grep -Po "(?<=\[\{\"id\":\")([0-9\.]*)")
-record_value=$(echo ${record_info} | grep -Po "(?<=\"value\":\")([0-9\.]*)")
-record_line_id=$(echo ${record_info} | grep -Po "(?<=\"line_id\":\")([0-9\.]*)")
+record_id=$(echo ${record_info} | ${GREP} -Po "(?<=\[\{\"id\":\")([0-9\.]*)")
+record_value=$(echo ${record_info} | ${GREP} -Po "(?<=\"value\":\")([0-9\.]*)")
+record_line_id=$(echo ${record_info} | ${GREP} -Po "(?<=\"line_id\":\")([0-9\.]*)")
 echo "${SUB_DOMAIN}:${DOMAIN} record_id: ${record_id}, record_line_id: ${record_line_id}, record_value: ${record_value}"
 
 local_ip=$(curl -s ns1.dnspod.net:6666)
