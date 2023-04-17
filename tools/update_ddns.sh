@@ -28,8 +28,8 @@ record_value=$(echo ${record_info} | ${GREP} -Po "(?<=\"value\":\")([0-9\.]*)")
 record_line_id=$(echo ${record_info} | ${GREP} -Po "(?<=\"line_id\":\")([0-9\.]*)")
 echo "${SUB_DOMAIN}:${DOMAIN} record_id: ${record_id}, record_line_id: ${record_line_id}, record_value: ${record_value}"
 
-local_ip_ret=$(curl -s "https://pv.sohu.com/cityjson?ie=utf-8")
-local_ip=$(echo ${local_ip_ret} | ${GREP} -Po "(?<=\"cip\": \")([0-9\.]*)")
+local_ip_ret=$(curl -s "http://ipinfo.io/ip")
+local_ip=${local_ip_ret}
 echo "local ip: ${local_ip}"
 
 if [ $record_value != $local_ip ]
