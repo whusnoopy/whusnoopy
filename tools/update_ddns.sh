@@ -13,7 +13,7 @@ source "$(dirname $0)/ddns.conf"
 
 #### parse ids
 
-if [ $(grep -V | grep "GNU grep") ]
+if [[ $(grep -V | grep "GNU grep") ]]
 then
   GREP="grep"
 else
