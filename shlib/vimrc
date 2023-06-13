@@ -21,9 +21,3 @@ set laststatus=2 " 一直显示状态栏
 " 插入模式切换
 map <F9> :set paste!<BAr>set paste?<CR>
 
-" 多 Tab 时翻页
-map <F12> <Esc>:tabnext<CR>gi <F11> :tabprevious<CR>
-imap <F12> <Esc>:tabnext<CR>gi <F11> <Esc>:tabprevious<CR>gi
-
-map <F12> <Esc>:tabnext<CR>gi <F12> :tabnext<CR>
-imap <F12> <Esc>:tabnext<CR>gi <F12> <Esc>:tabnext<CR>gi
